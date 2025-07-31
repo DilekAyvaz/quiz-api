@@ -1,15 +1,16 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { getAllQuestions, getRandomQuestion } = require('../models/question.model');
 
-const getAllQuestions = async (req, res) => {
-  const questions = await prisma.question.findMany({ where: { deletedAt: null } });
+const getAllQuestionsHandler = async (req, res) => {
+  const questions = await getAllQuestions();
   res.json(questions);
 };
 
-const getRandomQuestion = async (req, res) => {
-  const questions = await prisma.question.findMany({ where: { deletedAt: null } });
-  const random = questions[Math.floor(Math.random() * questions.length)];
+const getRandomQuestionHandler = async (req, res) => {
+  const random = await getRandomQuestion();
   res.json(random);
 };
 
-module.exports = { getAllQuestions, getRandomQuestion };
+module.exports = { 
+  getAllQuestions: getAllQuestionsHandler, 
+  getRandomQuestion: getRandomQuestionHandler 
+};
